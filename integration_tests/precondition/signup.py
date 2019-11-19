@@ -1,4 +1,4 @@
-class SignUP():
+class SignUP:
     @staticmethod
     def auth():
         assert True
