@@ -16,7 +16,7 @@ class Orders:
         return code, data
 
     @staticmethod
-    def get_params_for_get_codes(jsessionid, bufferStatus):
+    def get_params_for_get_codes(jsessionid, bufferStatus, quantity=2):
         code, data = Orders.get_orders(jsessionid)
         params_for_get_codes = None
         for result in data['result']:
@@ -26,7 +26,7 @@ class Orders:
                         "gtin": buffers['gtin'],
                         "lastBlockId": "0",
                         "orderId": result['orderId'],
-                        "quantity": 2}
+                        "quantity": quantity}
                     break
         if params_for_get_codes is not None:
             return params_for_get_codes

@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.constants import HOST, CLIENT_TOKEN, CLIENT_TOKEN_INCORRECT
 from integration_tests.example_response.aggregation import response_aggregationUnits
 from integration_tests.example_response.codes import response_codes
 from integration_tests.example_response.issuers import response_issuers
@@ -45,10 +45,21 @@ def test_positive_ping():
 def test_negative_ping():
     logging.info(f"Проверка негативного выполнения запроса {url_ping} без токена")
     api = ClientApi()
-    code, data = api.get(url_ping)
+    headers = {"clientToken": CLIENT_TOKEN}
+    code, data = api.get(url_ping, headers=headers)
     assert code == 400
     assert data['errorCode'] == 400
     assert data['errorText'] == "Missing request header 'clientToken' for method parameter of type String"
+
+
+def test_negative_ping_incorrect_token():
+    logging.info(f"Проверка негативного выполнения запроса {url_ping} без токена")
+    api = ClientApi()
+    headers = {"clientToken": CLIENT_TOKEN_INCORRECT}
+    code, data = api.get(url_ping, headers=headers)
+    assert code == 400
+    assert data['errorCode'] == 400
+    assert data['errorText'] == 'Указан неверный client token'
 
 
 def test_positive_orders():
@@ -138,6 +149,19 @@ def test_positive_get_codes():
     assert len(mismatch_keys) == 0 and len(mismatch_keys1) == 0
     assert len(data['codes']) == 2
     assert code == 200
+
+
+def test_positive_get_codes_not_repeat_codes():
+    logging.info(f"Проверка позитивного сценария выполнения запроса {url_codes}")
+    api = ClientApi()
+    jsessionid = Auth.get_jssesion_id()
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE", quantity=1)
+    headers = {"clientToken": CLIENT_TOKEN}
+    code, data1 = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    code, data2 = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    assert code == 200
+    assert data1['codes'][0] != data2['codes'][0]
+    assert data1['blockId'] != data2['blockId']
 
 
 def test_negative_get_codes_buffer_not_active():
