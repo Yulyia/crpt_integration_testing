@@ -28,7 +28,7 @@ def test_positive_suborder_close_left_in_buffer_0():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_suborder_close}")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, "ACTIVE", leftInBuffer=0)
+    orders = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
