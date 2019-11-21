@@ -24,7 +24,21 @@ def test_positive_suborder_close():
     assert len(data) == 1
 
 
-def test_negative_suborder_close_buffer_unactive():
+def test_positive_suborder_close_left_in_buffer_0():
+    logging.info(f"Проверка позитивного сценария выполнения запроса {url_suborder_close}")
+    api = ClientApi()
+    jsessionid = Auth.get_jssesion_id()
+    orders = Orders.get_params_for_get_codes(jsessionid, "ACTIVE", leftInBuffer=0)
+    headers = {"clientToken": CLIENT_TOKEN}
+    code, data = api.post(url=url_suborder_close, headers=headers,
+                          params={"orderId": orders['orderId'],
+                                  "gtin": orders['gtin']})
+    assert code == 200
+    assert data['success']
+    assert len(data) == 1
+
+
+def test_positive_suborder_close_buffer_unactive():
     logging.info(f"Проверка негативного сценария выполнения запроса {url_suborder_close} "
                  f"для кодов из закрытого подзаказа")
     logging.info("Незакончен")

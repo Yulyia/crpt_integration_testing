@@ -52,7 +52,7 @@ def test_negative_get_codes_buffer_not_active():
     code, data = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     assert code == 400
     assert len(data) == 2
-    assert data['errorText'] == 'BufferService.NotActive'
+    assert data['errorText'] == 'BufferService.NotActive' or "Буфер не активен"
 
 
 def test_negative_get_codes_required_gtin():

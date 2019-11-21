@@ -21,7 +21,7 @@ def test_positive_aggregation():
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 200
     mismatch_keys = [key for key in data if key not in response_aggregationUnits]
     for key in mismatch_keys:
@@ -42,7 +42,7 @@ def test_positive_aggregation_any_params():
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "UPDATE", quality=["C", "D"])
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 200
     mismatch_keys = [key for key in data if key not in response_aggregationUnits]
     for key in mismatch_keys:
@@ -80,7 +80,7 @@ def test_negative_aggregation_required_quality():
     del data_aggregation['aggregationUnits'][0]['sntins'][0]['quality']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     assert data['errorText'] == 'Параметр \'quality\' не может быть пустым'
@@ -98,7 +98,7 @@ def test_negative_aggregation_required_unit_serial_number():
     del data_aggregation['aggregationUnits'][0]['unitSerialNumber']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     assert data['errorText'] == 'aggregationUnits[0].unitSerialNumber: не может быть пусто'
@@ -116,7 +116,7 @@ def test_negative_aggregation_required_aggregation_unit_capacity():
     del data_aggregation['aggregationUnits'][0]['aggregationUnitCapacity']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     assert data['errorText'] == 'aggregationUnits[0].aggregationUnitCapacity: должно быть больше или равно 1'
@@ -134,7 +134,7 @@ def test_negative_aggregation_required_aggregation_type():
     del data_aggregation['aggregationUnits'][0]['aggregationType']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     assert data['errorText'] == 'aggregationUnits[0].aggregationType: должно быть задано'
@@ -152,7 +152,7 @@ def test_negative_aggregation_required_aggregated_items_count():
     del data_aggregation['aggregationUnits'][0]['aggregatedItemsCount']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     assert data['errorText'] == 'aggregationUnits[0].aggregatedItemsCount: должно быть больше или равно 1'
@@ -170,14 +170,14 @@ def test_negative_aggregation_required_code():
     del data_aggregation['aggregationUnits'][0]['sntins'][0]['code']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     # TODO поправить текст ошибки в коде
     assert data['errorText'] == 'Указаны неверные коды маркировки'
 
 
-def test_negative_aggregation_required_invalid_quality():
+def test_negative_aggregation_invalid_quality():
     logging.info(f"Проверка негативного сценария выполнения запроса {url_aggregation} "
                  f"c невалидными параметрами качества")
     api = ClientApi()
@@ -189,7 +189,7 @@ def test_negative_aggregation_required_invalid_quality():
     del data_aggregation['aggregationUnits'][0]['aggregatedItemsCount']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     str_exists = data['errorText'].find('''"Z": value not one of declared Enum instance names: [A, B, C, D, F]''')
@@ -208,7 +208,7 @@ def test_negative_aggregation_required_invalid_aggregation_type():
     del data_aggregation['aggregationUnits'][0]['aggregatedItemsCount']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_aggregation, headers=headers, json=data_aggregation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
     str_exists = \

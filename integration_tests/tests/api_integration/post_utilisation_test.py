@@ -19,10 +19,13 @@ def test_positive_utilisation():
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    if code == 400:
+        logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
+        assert False
     data_utilisation = ApiIntegration.post_utilisation(data_codes, "VERIFIED")
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_utilisation, headers=headers, json=data_utilisation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 200
     assert data['reportId'] is not None
     assert len(data) == 1
@@ -35,10 +38,13 @@ def test_positive_utilisation_any_usage_type():
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    if code == 400:
+        logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
+        assert False
     data_utilisation = ApiIntegration.post_utilisation(data_codes, "PRINTED")
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_utilisation, headers=headers, json=data_utilisation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 200
     assert data['reportId'] is not None
     assert len(data) == 1
@@ -51,10 +57,13 @@ def test_negative_utilisation_invalid_usage_type():
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    if code == 400:
+        logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
+        assert False
     data_utilisation = ApiIntegration.post_utilisation(data_codes, "INVALID")
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_utilisation, headers=headers, json=data_utilisation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 400
     str_include = data['errorText'].find(
         '"INVALID": value not one of declared Enum instance names: [VERIFIED, PRINTED]')
@@ -68,6 +77,9 @@ def test_negative_utilisation_required_oms_id():
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    if code == 400:
+        logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
+        assert False
     data_utilisation = ApiIntegration.post_utilisation(data_codes, "VERIFIED")
     code, data = api.post(url=url_utilisation, headers=headers, json=data_utilisation)
     assert code == 400
@@ -82,11 +94,14 @@ def test_negative_utilisation_required_usage_type():
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    if code == 400:
+        logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
+        assert False
     data_utilisation = ApiIntegration.post_utilisation(data_codes, "PRINTED")
     del data_utilisation['usageType']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_utilisation, headers=headers, json=data_utilisation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 400
     assert data['errorText'] == 'usageType: должно быть задано'
 
@@ -99,10 +114,13 @@ def test_negative_utilisation_required_sntins():
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
+    if code == 400:
+        logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
+        assert False
     data_utilisation = ApiIntegration.post_utilisation(data_codes, "PRINTED")
     del data_utilisation['sntins']
     orders = Orders.get_orders(jsessionid)
     code, data = api.post(url=url_utilisation, headers=headers, json=data_utilisation,
-                          params={"omsId": orders[1]['result'][0]['omsId']})
+                          params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 400
-    assert data['errorText'] == 'sntins: размер должен быть между 1 и 30000'
+    assert data['errorText'] == 'sntins: должно быть задано'

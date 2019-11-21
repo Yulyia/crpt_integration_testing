@@ -26,8 +26,7 @@ def test_positive_ping():
 def test_negative_ping():
     logging.info(f"Проверка негативного выполнения запроса {url_ping} без токена")
     api = ClientApi()
-    headers = {"clientToken": CLIENT_TOKEN}
-    code, data = api.get(url_ping, headers=headers)
+    code, data = api.get(url_ping)
     assert code == 400
     assert data['errorCode'] == 400
     assert data['errorText'] == "Missing request header 'clientToken' for method parameter of type String"
