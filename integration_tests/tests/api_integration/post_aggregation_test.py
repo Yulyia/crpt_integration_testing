@@ -1,6 +1,7 @@
 import logging
 from integration_tests.constants import HOST, CLIENT_TOKEN
 from integration_tests.example_response.aggregation import response_aggregationUnits
+from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.api_integration import ApiIntegration
 from integration_tests.utils.auth import Auth
@@ -15,7 +16,7 @@ def test_positive_aggregation():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_aggregation} c aggregation_type='AGGREGATION'")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
