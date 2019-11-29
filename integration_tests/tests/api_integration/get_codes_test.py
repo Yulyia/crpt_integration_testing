@@ -1,4 +1,5 @@
 import logging
+from datetime import date, timedelta
 
 import pytest
 
@@ -7,6 +8,7 @@ from integration_tests.example_response.codes import response_codes
 from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.auth import Auth
+from integration_tests.utils.get_order_dto_light import OrderLights
 from integration_tests.utils.orders import Orders
 
 url_codes = f"{HOST}/api/v2/cml/codes"
@@ -110,3 +112,17 @@ def test_get_codes():
                              headers=headers, verify=False)
         logging.info(code)
         logging.info(f"DATA: {data}")
+
+
+def test_get_orders():
+    api = ClientApi()
+    GTIN_SHOES = "04616052543059"
+    quantity = 6
+    SHOES_TEMPLATE = 1
+    request = OrderLights.get_order_dto_light_request(GTIN_SHOES, quantity, SHOES_TEMPLATE)
+    param = {'omsId':"d1bc8149-7b39-4aa2-afb1-df1b6c8f80c5"}
+    headers = {'clientToken':'d5986e94-5d2d-83bd-cf69-0c675b8b6ddc'}
+    code, data = api.post(url="https://omspreprod.crptech.ru:12001/api/v2/light/orders", headers=headers, params=param, json=request, verify=False)
+    assert True
+
+
