@@ -17,10 +17,10 @@ def get_filters(quantity: int = 0):
 
 
 def get_filters_for_one_buffer(status, quantity: int = 0):
+    if status == BufferStatus.ACTIVE_STATUS and quantity == 0:
+        return BufferStatus.ACTIVE_STATUS.value, lambda i: i['leftInBuffer'] == 0
     if status == BufferStatus.ACTIVE_STATUS:
         return BufferStatus.ACTIVE_STATUS.value, lambda i: i['leftInBuffer'] >= quantity
-    if status == BufferStatus.ACTIVE_STATUS_EMPTY:
-        return BufferStatus.ACTIVE_STATUS_EMPTY.value, lambda i: i['leftInBuffer'] == 0
     if status == BufferStatus.CLOSED_STATUS:
         return BufferStatus.CLOSED_STATUS.value, lambda i: True
 
@@ -57,14 +57,13 @@ class Orders:
     def get_params_for_get_codes(jsessionid, buffer_status, quantity=2):
         code, data = Orders.get_orders(jsessionid)
         filter_1 = get_filters_for_one_buffer(buffer_status, quantity)
-        params_for_get_codes = None
         order_check = list(filter(lambda order: filter_buffers(order, filter_1[0], filter_1[1]), data['result']))
-        params_for_get_codes = {
-            "gtin": order_check[0]['buffers'][0]['gtin'],
-            "lastBlockId": "0",
-            "orderId": order_check[0]['orderId'],
-            "quantity": quantity}
-        if params_for_get_codes is not None:
+        if len(order_check) > 0:
+            params_for_get_codes = {
+                "gtin": order_check[0]['buffers'][0]['gtin'],
+                "lastBlockId": "0",
+                "orderId": order_check[0]['orderId'],
+                "quantity": quantity}
             logging.info(f"Параметры заказа для получения КМ: orderId - [{params_for_get_codes['orderId']}] "
                          f"gtin - [{params_for_get_codes['gtin']}] "
                          f"quantity - [{params_for_get_codes['quantity']}]")
