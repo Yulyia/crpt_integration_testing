@@ -3,6 +3,7 @@ import logging
 import pytest
 
 from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.api_integration import ApiIntegration
 from integration_tests.utils.auth import Auth
@@ -16,7 +17,7 @@ def test_positive_utilisation():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_utilisation}")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
@@ -35,7 +36,7 @@ def test_positive_utilisation_any_usage_type():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_utilisation} c usage_type=PRINTED")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
@@ -54,7 +55,7 @@ def test_negative_utilisation_invalid_usage_type():
     logging.info(f"Проверка негативного сценария выполнения запроса {url_utilisation} c невалидным usage_type")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
@@ -74,7 +75,7 @@ def test_negative_utilisation_required_oms_id():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_utilisation} без обязательного параметра omsId")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
@@ -91,7 +92,7 @@ def test_negative_utilisation_required_usage_type():
         f"Проверка позитивного сценария выполнения запроса {url_utilisation} без обязательного параметра usageType")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
@@ -111,7 +112,7 @@ def test_negative_utilisation_required_sntins():
         f"Проверка позитивного сценария выполнения запроса {url_utilisation} без обязательного параметра sntins")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:

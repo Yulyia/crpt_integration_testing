@@ -37,7 +37,7 @@ def test_positive_aggregation_any_params():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_aggregation} c aggregation_type='UPDATE'")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "UPDATE", quality=["C", "D"])
@@ -59,7 +59,7 @@ def test_negative_aggregation_required_oms_id():
                  f"c без обязательного параметра запроса omsId")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
@@ -74,7 +74,7 @@ def test_negative_aggregation_required_quality():
                  f"c без обязательного параметра запроса quality")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
@@ -92,7 +92,7 @@ def test_negative_aggregation_required_unit_serial_number():
                  f"c без обязательного параметра запроса unitSerialNumber")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
@@ -110,7 +110,7 @@ def test_negative_aggregation_required_aggregation_unit_capacity():
                  f"c без обязательного параметра запроса aggregationUnitCapacity")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
@@ -128,7 +128,7 @@ def test_negative_aggregation_required_aggregation_type():
                  f"c без обязательного параметра запроса aggregationType")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
@@ -146,7 +146,7 @@ def test_negative_aggregation_required_aggregated_items_count():
                  f"c без обязательного параметра запроса aggregatedItemsCount")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
@@ -164,7 +164,7 @@ def test_negative_aggregation_required_code():
                  f"c без обязательного параметра запроса code")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["A", "B"])
@@ -183,7 +183,7 @@ def test_negative_aggregation_invalid_quality():
                  f"c невалидными параметрами качества")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "AGGREGATION", quality=["Z", "B"])
@@ -202,7 +202,7 @@ def test_negative_aggregation_required_invalid_aggregation_type():
                  f"c невалидными параметрами типа аггрегации")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     data_aggregation = ApiIntegration.post_aggregation(data_codes, "INVALID_TYPE", quality=["A", "B"])

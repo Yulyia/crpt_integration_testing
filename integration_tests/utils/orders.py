@@ -58,11 +58,11 @@ class Orders:
         code, data = Orders.get_orders(jsessionid)
         filter_1 = get_filters_for_one_buffer(buffer_status, quantity)
         params_for_get_codes = None
-        order_check = list(filter(lambda order: filter_buffers(order, filter_1[0], filter_1[2]), data['result']))
+        order_check = list(filter(lambda order: filter_buffers(order, filter_1[0], filter_1[1]), data['result']))
         params_for_get_codes = {
-            "gtin": order_check[0]['gtin'],
+            "gtin": order_check[0]['buffers'][0]['gtin'],
             "lastBlockId": "0",
-            "orderId": order_check['orderId'],
+            "orderId": order_check[0]['orderId'],
             "quantity": quantity}
         if params_for_get_codes is not None:
             logging.info(f"Параметры заказа для получения КМ: orderId - [{params_for_get_codes['orderId']}] "

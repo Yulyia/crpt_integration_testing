@@ -2,6 +2,7 @@ import logging
 
 
 from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.auth import Auth
 from integration_tests.utils.orders import Orders
@@ -14,7 +15,7 @@ def test_positive_suborder_close():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_suborder_close}")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
@@ -28,7 +29,7 @@ def test_positive_suborder_close_left_in_buffer_0():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_suborder_close}")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, "ACTIVE")
+    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
@@ -44,7 +45,7 @@ def test_positive_suborder_close_buffer_unactive():
     logging.info("Незакончен")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, "CLOSED")
+    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
@@ -60,7 +61,7 @@ def test_negative_suborder_close_required_order_id():
                  f"без обязательного параметра orderId")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, "CLOSED")
+    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"gtin": orders['gtin']})
@@ -75,7 +76,7 @@ def test_negative_suborder_close_required_gtin():
                  f"без обязательного параметра gtin")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, "CLOSED")
+    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId']})
