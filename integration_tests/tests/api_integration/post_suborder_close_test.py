@@ -45,12 +45,11 @@ def test_positive_suborder_close_buffer_unactive():
     logging.info("Незакончен")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS)
+    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS, quantity=0)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
                                   "gtin": orders['gtin']})
-    # TODO дополнить сценарий тем, что этот подзаказ больше недоступен для других операций
     assert code == 200
     assert data['success']
     assert len(data) == 1
@@ -61,7 +60,7 @@ def test_negative_suborder_close_required_order_id():
                  f"без обязательного параметра orderId")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS)
+    orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS, quantity=0)
     headers = {"clientToken": CLIENT_TOKEN}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"gtin": orders['gtin']})

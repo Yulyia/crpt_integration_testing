@@ -97,32 +97,13 @@ def test_negative_get_codes_required_quantity():
     assert data['errorText'] == 'Required int parameter \'quantity\' is not present'
 
 
-def test_get_codes():
-    pytest.skip()
-    api = ClientApi()
-    headers = {'clientToken':'d5986e94-5d2d-83bd-cf69-0c675b8b6ddc'}
-    params = {'gtin':"04650117240200",
-              "omsId":"d1bc8149-7b39-4aa2-afb1-df1b6c8f80c5",
-              "orderId":"6c9f6c70-395f-4b4a-831a-2cf9b8ca9d1c",
-              "quantity":100}
-    import ssl
-
-    while True:
-        code, data = api.get(url="https://omspreprod.crptech.ru:12001/api/v2/light/codes", params=params,
-                             headers=headers, verify=False)
-        logging.info(code)
-        logging.info(f"DATA: {data}")
 
 
-def test_get_orders():
-    api = ClientApi()
-    GTIN_SHOES = "04616052543059"
-    quantity = 6
-    SHOES_TEMPLATE = 1
-    request = OrderLights.get_order_dto_light_request(GTIN_SHOES, quantity, SHOES_TEMPLATE)
-    param = {'omsId':"d1bc8149-7b39-4aa2-afb1-df1b6c8f80c5"}
-    headers = {'clientToken':'d5986e94-5d2d-83bd-cf69-0c675b8b6ddc'}
-    code, data = api.post(url="https://omspreprod.crptech.ru:12001/api/v2/light/orders", headers=headers, params=param, json=request, verify=False)
-    assert True
+
+
+
+
+
+
 
 

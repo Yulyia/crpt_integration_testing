@@ -58,9 +58,13 @@ class Orders:
         code, data = Orders.get_orders(jsessionid)
         filter_1 = get_filters_for_one_buffer(buffer_status, quantity)
         order_check = list(filter(lambda order: filter_buffers(order, filter_1[0], filter_1[1]), data['result']))
+        gtin = []
+        for buffer in order_check[0]['buffers']:
+            if buffer['bufferStatus'] == buffer_status.value and buffer['leftInBuffer'] >= quantity:
+                gtin.append(buffer['gtin'])
         if len(order_check) > 0:
             params_for_get_codes = {
-                "gtin": order_check[0]['buffers'][0]['gtin'],
+                "gtin": gtin[0],
                 "lastBlockId": "0",
                 "orderId": order_check[0]['orderId'],
                 "quantity": quantity}
