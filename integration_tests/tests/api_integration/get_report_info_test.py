@@ -1,13 +1,12 @@
 import logging
 
-
-from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.constants import CLIENT_TOKEN_KD, STAND_KD
 from integration_tests.example_response.report_info import response_report_info
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.auth import Auth
 from integration_tests.utils.report import Report
 
-url_report_info = f"{HOST}/api/v2/cml/report/info"
+url_report_info = f"{STAND_KD}/api/v2/cml/report/info"
 
 
 def test_positive_report_info():
@@ -15,7 +14,7 @@ def test_positive_report_info():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     report_id = Report.get_report_id(jsessionid)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.get(url_report_info, headers=headers, params={"reportId": report_id})
     mismatch_keys = [key for key in data if key not in response_report_info]
     for key in mismatch_keys:
@@ -32,7 +31,7 @@ def test_negative_report_info_required_reportid():
     logging.info(f"Проверка негативного сценария выполнения запроса {url_report_info}"
                  f" без обязательного параметра запроса reportId")
     api = ClientApi()
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.get(url_report_info, headers=headers)
     assert code == 400
     assert data['errorCode'] == 400 and data['errorText'] == 'Required String parameter \'reportId\' is not present'

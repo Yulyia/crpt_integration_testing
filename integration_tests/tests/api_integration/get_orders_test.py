@@ -1,18 +1,18 @@
 import logging
 
-from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.constants import CLIENT_TOKEN_KD, STAND_KD
 from integration_tests.example_response.orders import response_orders, buffers
 from integration_tests.utils.api_helpers import ClientApi
 
 
-url_orders = f"{HOST}/api/v2/cml/orders"
-url_codes = f"{HOST}/api/v2/cml/codes"
+url_orders = f"{STAND_KD}/api/v2/cml/orders"
+url_codes = f"{STAND_KD}/api/v2/cml/codes"
 
 
 def test_positive_orders():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_orders}")
     api = ClientApi()
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.get(url_orders, headers=headers)
     assert code == 200
     mismatch_keys = [key for key in data['orderInfos'][0] if key not in response_orders]
