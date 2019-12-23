@@ -34,7 +34,7 @@ class OrderProductPharma:
              "quantity": quantity,
              "serialNumberType": "OPERATOR",
              "serialNumbers": None,
-             "templateId": 1
+             "templateId": 2
              }]
         uuid_ = uuid.uuid4()
         orders = {
@@ -55,7 +55,7 @@ class OrderProductTobacco:
             "quantity": quantity,
             "serialNumberType": "OPERATOR",
             "serialNumbers": None,
-            "templateId": 1}]
+            "templateId": 3}]
         orders = {
             "expectedStartDate": str(date.today()),
             "factoryAddress":"ul. Pervaya Tabachnaya, 7",
@@ -76,20 +76,41 @@ class OrderProductMilk:
     def get_order_for_milk_request(gtin_, quantity):
         products = [{
             "gtin": gtin_,
-            "cisType": "string",
             "quantity": quantity,
-            "expDate":  str(date.today()),
-            "expDate72": None,
-            "serialNumberType": "SELF_MADE",
-            "serialNumbers": None}]
+            "serialNumberType": "OPERATOR",
+            "serialNumbers": None,
+            "templateId": 6}]
         orders = {
             "contactPerson": "John Smith (Иванов Петр Сидорович)",
-            "contractorId": "string",
-            "createMethodType": "SELF_MADE",
+            "contractDate": str(date.today()),
+            "createMethodType": "CEM",
             "productionOrderId": str(uuid.uuid4()),
             "products": products,
             "releaseMethodType": "IMPORT"
         }
         return orders
+
+
+class OrderProductWheelchairs:
+    @staticmethod
+    def get_order_for_wheelchairs_request(gtin, quantity):
+        products = []
+        for i in range(len(gtin)):
+            products.append({
+                "gtin": gtin[i],
+                "quantity": quantity,
+                "serialNumberType": "OPERATOR",
+                "serialNumbers": None,
+                "templateId": 12})
+
+        contract_date = date.today() + timedelta(days=90)
+        contract_number = str(randint(1000000000, 9999999999))
+        uuid_ = uuid.uuid1()
+        orders = OrderDtoLight.OrderDtoLight(contactPerson="Test", contractDate=str(contract_date),
+                                             contractNumber=contract_number,
+                                             createMethodType="SELF_MADE",
+                                             productionOrderId=str(uuid_), releaseMethodType="IMPORT", products=products)
+        return orders
+
 
 

@@ -2,9 +2,9 @@ import logging
 
 from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
-from integration_tests.constants import HOST
+from integration_tests.constants import STAND_KD
 
-orders_url_in_kd = f"{HOST}/webapi/v1/orders"
+orders_url_in_kd = f"{STAND_KD}/webapi/v1/orders"
 params = {"limit": 10, "skip": 0, "total": 0, "sort": ""}
 
 

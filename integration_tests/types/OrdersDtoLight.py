@@ -3,13 +3,13 @@ class OrderDtoLight:
     def OrderDtoLight(contactPerson, contractDate, contractNumber, createMethodType, productionOrderId,
                  products, releaseMethodType):
         OrderDtoLight = {
-        "contactPerson" : contactPerson,
-        "contractDate" : contractDate,
-        "contractNumber" : contractNumber,
-        "createMethodType" : createMethodType,
-        "productionOrderId" : productionOrderId,
+        "contactPerson": contactPerson,
+        "contractDate": contractDate,
+        "contractNumber": contractNumber,
+        "createMethodType": createMethodType,
+        "productionOrderId": productionOrderId,
         "products": products,
-        "releaseMethodType" : releaseMethodType}
+        "releaseMethodType": releaseMethodType}
         return OrderDtoLight
 
 

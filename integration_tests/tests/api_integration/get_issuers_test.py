@@ -1,16 +1,16 @@
 import logging
 
-from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.constants import CLIENT_TOKEN_KD, STAND_KD
 from integration_tests.example_response.issuers import response_issuers
 from integration_tests.utils.api_helpers import ClientApi
 
-url_issuers = f"{HOST}/api/v2/cml/issuers"
+url_issuers = f"{STAND_KD}/api/v2/cml/issuers"
 
 
 def test_positive_issuers():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_issuers} (получение эмитентов)")
     api = ClientApi()
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.get(url_issuers, headers=headers)
     assert code == 200
     mismatch_keys = [key for key in data[0] if key not in response_issuers]

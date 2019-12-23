@@ -1,8 +1,8 @@
 from integration_tests.utils.api_helpers import ClientApi
-from integration_tests.constants import HOST
+from integration_tests.constants import STAND_KD
 
 
-report_url_in_kd = f"{HOST}/webapi/v1/reports"
+report_url_in_kd = f"{STAND_KD}/webapi/v1/reports"
 params = {"limit": 10, "skip": 0, "total": 0, "sort": ""}
 
 

@@ -1,24 +1,22 @@
 import logging
 
-import pytest
-
-from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.constants import CLIENT_TOKEN_KD, STAND_KD
 from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.api_integration import ApiIntegration
 from integration_tests.utils.auth import Auth
 from integration_tests.utils.orders import Orders
 
-url_codes = f"{HOST}/api/v2/cml/codes"
-url_utilisation = f"{HOST}/api/v2/cml/utilisation"
+url_codes = f"{STAND_KD}/api/v2/cml/codes"
+url_utilisation = f"{STAND_KD}/api/v2/cml/utilisation"
 
 
 def test_positive_utilisation():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_utilisation}")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS, quantity=1)
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
         logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
@@ -37,7 +35,7 @@ def test_positive_utilisation_any_usage_type():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
         logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
@@ -56,7 +54,7 @@ def test_negative_utilisation_invalid_usage_type():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
         logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
@@ -76,7 +74,7 @@ def test_negative_utilisation_required_oms_id():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
         logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
@@ -93,7 +91,7 @@ def test_negative_utilisation_required_usage_type():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
         logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")
@@ -113,7 +111,7 @@ def test_negative_utilisation_required_sntins():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
         logging.info(f"Нет активных кодов. Ошибка: {data_codes['errorText']}")

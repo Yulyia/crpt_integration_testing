@@ -1,14 +1,13 @@
 import logging
 
-
-from integration_tests.constants import HOST, CLIENT_TOKEN
+from integration_tests.constants import CLIENT_TOKEN_KD, STAND_KD
 from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.auth import Auth
 from integration_tests.utils.orders import Orders
 
-url_codes = f"{HOST}/api/v2/cml/codes"
-url_suborder_close = f"{HOST}/api/v2/cml/suborder/close"
+url_codes = f"{STAND_KD}/api/v2/cml/codes"
+url_suborder_close = f"{STAND_KD}/api/v2/cml/suborder/close"
 
 
 def test_positive_suborder_close():
@@ -16,7 +15,7 @@ def test_positive_suborder_close():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
                                   "gtin": orders['gtin']})
@@ -30,7 +29,7 @@ def test_positive_suborder_close_left_in_buffer_0():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS, quantity=0)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
                                   "gtin": orders['gtin']})
@@ -46,7 +45,7 @@ def test_positive_suborder_close_buffer_unactive():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS, quantity=0)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId'],
                                   "gtin": orders['gtin']})
@@ -61,7 +60,7 @@ def test_negative_suborder_close_required_order_id():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS, quantity=0)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"gtin": orders['gtin']})
 
@@ -76,7 +75,7 @@ def test_negative_suborder_close_required_gtin():
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
     orders = Orders.get_params_for_get_codes(jsessionid, BufferStatus.CLOSED_STATUS)
-    headers = {"clientToken": CLIENT_TOKEN}
+    headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.post(url=url_suborder_close, headers=headers,
                           params={"orderId": orders['orderId']})
 
