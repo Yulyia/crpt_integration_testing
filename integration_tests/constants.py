@@ -1,0 +1,36 @@
+STAND = "dev"
+
+
+if STAND == "dev":
+    HOST_KD = '10.0.76.1'
+    PORT_KD = 6080
+
+    HOST_SUZ = '10.0.76.1'
+    PORT_SUZ = 9999
+
+    CLIENT_TOKEN_SUZ = "1cecc8fb-fb47-4c8a-af3d-d34c1ead8c4f"
+    STAND_SUZ = f"http://{HOST_SUZ}:{PORT_SUZ}"
+    STAND_KD = f"http://{HOST_KD}:{PORT_KD}"
+elif STAND == "preprod":
+    HOST_KD = '91.242.38.36'
+    PORT_KD = 6080
+
+    HOST_SUZ = 'omspreprod.crptech.ru'
+    PORT_SUZ = 12001
+
+    CLIENT_TOKEN_SUZ = "d5986e94-5d2d-83bd-cf69-0c675b8b6ddc"
+    STAND_SUZ = f"https://{HOST_SUZ}:{PORT_SUZ}"
+    STAND_KD = f"http://{HOST_KD}:{PORT_KD}"
+
+
+CLIENT_TOKEN_KD = "1"
+CLIENT_TOKEN_INCORRECT = "2"
+
+TEMPLATE_ID_MILK = 6
+TEMPLATE_ID_LIGHT = 1
+TEMPLATE_ID_PHARMA = 2
+TEMPLATE_ID_TOBACCO = 3
+TEMPLATE_ID_WHEELCHAIRS = 13
+TEMPLATE_ID_BICYCLE = 11
+TEMPLATE_ID_PERFUMERY = 9
+TEMPLATE_ID_TIRES = 7

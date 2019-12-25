@@ -59,10 +59,10 @@ class Orders:
         filter_1 = get_filters_for_one_buffer(buffer_status, quantity)
         order_check = list(filter(lambda order: filter_buffers(order, filter_1[0], filter_1[1]), data['result']))
         gtin = []
-        for buffer in order_check[0]['buffers']:
-            if buffer['bufferStatus'] == buffer_status.value and buffer['leftInBuffer'] >= quantity:
-                gtin.append(buffer['gtin'])
         if len(order_check) > 0:
+            for buffer in order_check[0]['buffers']:
+                if buffer['bufferStatus'] == buffer_status.value and buffer['leftInBuffer'] >= quantity:
+                    gtin.append(buffer['gtin'])
             params_for_get_codes = {
                 "gtin": gtin[0],
                 "lastBlockId": "0",
@@ -70,10 +70,10 @@ class Orders:
                 "quantity": quantity}
             logging.info(f"Параметры заказа для получения КМ: orderId - [{params_for_get_codes['orderId']}] "
                          f"gtin - [{params_for_get_codes['gtin']}] "
-                         f"quantity - [{params_for_get_codes['quantity']}]")
+                             f"quantity - [{params_for_get_codes['quantity']}]")
             return params_for_get_codes
         else:
-            logging.info(f"Нет кодов со статусом:{buffer_status} и нужным кол-м КМ в буфере")
+            logging.info(f"Нет кодов со статусом:{buffer_status} и нужным кол-м КМ в буфере: {quantity}")
             assert False
 
 

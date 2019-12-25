@@ -15,7 +15,7 @@ def test_positive_utilisation():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_utilisation}")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS, quantity=1)
+    params_for_get_codes = Orders.get_params_for_get_codes(jsessionid, BufferStatus.ACTIVE_STATUS)
     headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data_codes = api.get(url=url_codes, params=params_for_get_codes, headers=headers)
     if code == 400:
@@ -65,7 +65,7 @@ def test_negative_utilisation_invalid_usage_type():
                           params={"omsId": orders[1]['result'][0]['issuerId']})
     assert code == 400
     str_include = data['errorText'].find(
-        '"INVALID": value not one of declared Enum instance names: [VERIFIED, PRINTED]')
+        '"INVALID": not one of the values accepted for Enum class: [VERIFIED, PRINTED]')
     assert str_include != -1
 
 

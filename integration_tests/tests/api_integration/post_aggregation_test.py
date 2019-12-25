@@ -194,7 +194,7 @@ def test_negative_aggregation_invalid_quality():
                           params={"omsId": orders[1]['result'][0]['issuerId']})
     assert len(data) == 2
     assert code == 400
-    str_exists = data['errorText'].find('''"Z": value not one of declared Enum instance names: [A, B, C, D, F]''')
+    str_exists = data['errorText'].find('''"Z": not one of the values accepted for Enum class: [A, B, C, D, F]''')
     assert str_exists != -1
 
 
@@ -214,5 +214,5 @@ def test_negative_aggregation_required_invalid_aggregation_type():
     assert len(data) == 2
     assert code == 400
     str_exists = \
-        data['errorText'].find('"INVALID_TYPE": value not one of declared Enum instance names: [UPDATE, AGGREGATION]')
+        data['errorText'].find('"INVALID_TYPE": not one of the values accepted for Enum class: [UPDATE, AGGREGATION]')
     assert str_exists != -1

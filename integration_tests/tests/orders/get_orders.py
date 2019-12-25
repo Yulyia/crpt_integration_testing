@@ -2,7 +2,7 @@ from integration_tests.constants import STAND_SUZ, CLIENT_TOKEN_SUZ
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.get_order import OrderLights, OrderProductPharma, OrderProductTobacco, \
     OrderProductMilk, OrderProductWheelchairs, OrderProductBicycle, OrderProductPerfumery, OrderProductTires
-from  integration_tests.utils.fixtures import *
+from integration_tests.utils.fixtures import *
 
 
 
@@ -12,7 +12,7 @@ QUANTITY = 50
 
 GTIN_SHOES = ["04616052543059", "04630034070012", "04650117240200"]
 GTIN_WHEELCHAIRS = ["04645896880037", "04640043460063"]
-GTIN_PHARMA = "88833355588800"
+GTIN_PHARMA = ["88833355588800"]
 GTIN_TOBACCO = "05995327112039"
 GTIN_MILK = "04607070190028"
 GTIN_BICYCLE = "04607112814905"
