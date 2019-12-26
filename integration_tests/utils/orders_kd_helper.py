@@ -5,7 +5,12 @@ from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.constants import STAND_KD
 
 orders_url_in_kd = f"{STAND_KD}/webapi/v1/orders"
-params = {"limit": 10, "skip": 0, "total": 0, "sort": ""}
+order_info_url = f"{STAND_KD}/webapi/v1/orders/[id_orders]"
+order_info_buffer_url = f"{STAND_KD}/webapi/v1/orders/buffer/[id_orders]"
+order_close_url = f"{STAND_KD}/webapi/v1/orders/close"
+
+
+params = {"limit": 50, "skip": 0, "total": 0, "sort": ""}
 
 
 def get_filters(quantity: int = 0):
@@ -39,6 +44,14 @@ class Orders:
         api = ClientApi()
         code, data = api.get(url=orders_url_in_kd, params=params, headers={"Cookie": f"JSESSIONID={jsessionid}"})
         return code, data
+
+    @staticmethod
+    def get_order_by_id(jsessionid, id_order):
+        api = ClientApi()
+        code, data = api.get(url=orders_url_in_kd, params=params, headers={"Cookie": f"JSESSIONID={jsessionid}"})
+        for order in data['result']:
+            if order['orderId'] == id_order:
+                return order
 
     @staticmethod
     def get_orders_all_check(jsessionid, quantity=2):
@@ -75,6 +88,43 @@ class Orders:
         else:
             logging.info(f"Нет кодов со статусом:{buffer_status} и нужным кол-м КМ в буфере: {quantity}")
             assert False
+
+    @staticmethod
+    def get_order_info(product_group, jsessionid):
+        api = ClientApi()
+        code, data = Orders.get_orders(jsessionid)
+        for order in data['result']:
+            if order['productGroupType'] == product_group:
+                order_id = order['orderId']
+                break
+        if order_id is None:
+            logging.info(f"Нет подходящего заказа с товарной группой {product_group}")
+            assert False
+        url = order_info_url.replace('[id_orders]', order_id)
+        code, data = api.get(url, headers={"Cookie": f"JSESSIONID={jsessionid}"})
+        return code, data
+
+    @staticmethod
+    def get_order_buffer_info(jsessionid):
+        api = ClientApi()
+        code, data = Orders.get_orders(jsessionid)
+        url = order_info_buffer_url.replace('[id_orders]', data['result'][0]['orderId'])
+        code, data = api.get(url, headers={"Cookie": f"JSESSIONID={jsessionid}"})
+        return code, data
+
+    @staticmethod
+    def close_order(jsessionid):
+        api = ClientApi()
+        code, data = Orders.get_orders(jsessionid)
+        data = {'orderId': data['result'][0]['orderId']}
+        code, data = api.post(order_close_url, json=data, headers={"Cookie": f"JSESSIONID={jsessionid}"})
+        return code, data
+
+
+
+
+
+
 
 
 

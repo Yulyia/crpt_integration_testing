@@ -4,7 +4,7 @@ from integration_tests.constants import CLIENT_TOKEN_KD, STAND_KD
 from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.auth import Auth
-from integration_tests.utils.orders import Orders
+from integration_tests.utils.orders_kd_helper import Orders
 
 url_codes = f"{STAND_KD}/api/v2/cml/codes"
 url_suborder_close = f"{STAND_KD}/api/v2/cml/suborder/close"

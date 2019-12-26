@@ -4,7 +4,7 @@ from integration_tests.constants import CLIENT_TOKEN_KD, STAND_KD
 from integration_tests.example_response.report_info import response_report_info
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.auth import Auth
-from integration_tests.utils.report import Report
+from integration_tests.utils.report_kd_helper import Report
 
 url_report_info = f"{STAND_KD}/api/v2/cml/report/info"
 
@@ -13,7 +13,7 @@ def test_positive_report_info():
     logging.info(f"Проверка позитивного сценария выполнения запроса {url_report_info}")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    report_id = Report.get_report_id(jsessionid)
+    report_id = Report.get_report(jsessionid)[1]['result'][0]['id']
     headers = {"clientToken": CLIENT_TOKEN_KD}
     code, data = api.get(url_report_info, headers=headers, params={"reportId": report_id})
     mismatch_keys = [key for key in data if key not in response_report_info]
@@ -42,7 +42,7 @@ def test_negative_report_info_required_client_token():
                  f" без токена")
     api = ClientApi()
     jsessionid = Auth.get_jssesion_id()
-    report_id = Report.get_report_id(jsessionid)
+    report_id = Report.get_report(jsessionid)[1]['result'][0]['id']
     code, data = api.get(url_report_info, params={"reportId": report_id})
     assert code == 400
     assert data['errorCode'] == 400

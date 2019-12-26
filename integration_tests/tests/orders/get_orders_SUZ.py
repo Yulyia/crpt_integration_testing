@@ -1,10 +1,8 @@
 from integration_tests.constants import STAND_SUZ, CLIENT_TOKEN_SUZ
 from integration_tests.utils.api_helpers import ClientApi
-from integration_tests.utils.get_order import OrderLights, OrderProductPharma, OrderProductTobacco, \
+from integration_tests.utils.orders_suz_helper import OrderLights, OrderProductPharma, OrderProductTobacco, \
     OrderProductMilk, OrderProductWheelchairs, OrderProductBicycle, OrderProductPerfumery, OrderProductTires
 from integration_tests.utils.fixtures import *
-
-
 
 
 QUANTITY = 50
@@ -13,7 +11,7 @@ QUANTITY = 50
 GTIN_SHOES = ["04616052543059", "04630034070012", "04650117240200"]
 GTIN_WHEELCHAIRS = ["04645896880037", "04640043460063"]
 GTIN_PHARMA = ["88833355588800"]
-GTIN_TOBACCO = "05995327112039"
+GTIN_TOBACCO = ["05995327112039"]
 GTIN_MILK = "04607070190028"
 GTIN_BICYCLE = "04607112814905"
 GTIN_PERFUMERY = "04650065312882"
@@ -30,9 +28,8 @@ URL_GET_ORDERS_TIRES= STAND_SUZ + "/api/v2/tires/orders"
 
 def test_get_orders_light_for_contractor(contractor_id):
     quantity = QUANTITY
-    SHOES_TEMPLATE = 1
     api = ClientApi()
-    request = OrderLights.get_order_dto_light_request(GTIN_SHOES, quantity, SHOES_TEMPLATE)
+    request = OrderLights.get_order_dto_light_request(GTIN_SHOES, quantity)
     param = {'omsId': contractor_id}
     headers = {'clientToken': CLIENT_TOKEN_SUZ}
     code, data = api.post(url=URL_GET_ORDERS_LIGHT, headers=headers, params=param,

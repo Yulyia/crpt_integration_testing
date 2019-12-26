@@ -10,7 +10,7 @@ from integration_tests.types.OrdersDtoLight import OrderDtoLight
 
 class OrderLights:
     @staticmethod
-    def get_order_dto_light_request(gtin, quantity, template_id):
+    def get_order_dto_light_request(gtin, quantity):
         products = []
         for i in range(len(gtin)):
             products.append({

@@ -1,6 +1,6 @@
 import pytest
 
-from integration_tests.utils.contractor import Contractor
+from integration_tests.utils.contractor_helper import Contractor
 
 
 @pytest.fixture

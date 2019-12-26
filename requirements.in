@@ -1,2 +1,4 @@
 pytest
 requests
+psycopg2
+sshtunnel

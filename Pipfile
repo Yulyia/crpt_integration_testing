@@ -9,6 +9,9 @@ verify_ssl = true
 requests = "*"
 pytest = "*"
 uuid = "*"
+psycopg2 = "*"
+sshtunnel = "*"
+pexpect = "*"
 
 [requires]
 python_version = "3.6"

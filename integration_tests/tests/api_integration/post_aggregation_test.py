@@ -6,7 +6,7 @@ from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.api_integration import ApiIntegration
 from integration_tests.utils.auth import Auth
-from integration_tests.utils.orders import Orders
+from integration_tests.utils.orders_kd_helper import Orders
 
 
 url_aggregation = f"{STAND_KD}/api/v2/cml/aggregation"

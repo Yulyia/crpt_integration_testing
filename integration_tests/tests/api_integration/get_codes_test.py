@@ -5,7 +5,7 @@ from integration_tests.example_response.codes import response_codes
 from integration_tests.types.bufferstatus import BufferStatus
 from integration_tests.utils.api_helpers import ClientApi
 from integration_tests.utils.auth import Auth
-from integration_tests.utils.orders import Orders
+from integration_tests.utils.orders_kd_helper import Orders
 
 url_codes = f"{STAND_KD}/api/v2/cml/codes"
 
